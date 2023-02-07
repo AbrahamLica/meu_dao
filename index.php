@@ -22,8 +22,8 @@ $lista = $usuarioDao->findAll();
             <td><?=$lista->getName();?></td>
             <td><?=$lista->getEmail();?></td>
             <td>
-                <a href="">[ EDITAR ]</a>
-                <a href="">[ EXCLUIR ]</a>
+                <a href="editar.php?id=<?=$lista->getId();?>">[ EDITAR ]</a>
+                <a href="excluir.php?id=<?=$lista->getId();?>">[ EXCLUIR ]</a>
             </td>
         </tr>
     <?php endforeach; ?>

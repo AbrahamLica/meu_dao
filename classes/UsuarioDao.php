@@ -5,13 +5,18 @@ class UsuarioDao
 {
     private $pdo;
 
-    public function __construct($driver)
-    {
+    public function __construct($driver) {
         $this->pdo = $driver;
     }
 
     public function add($u) {
-        
+        $sql = $this->pdo->prepare("INSERT INTO usuarios (nome, email) VALUES (:nome, :email)");
+        $sql->bindValue(':nome', $u->getName());
+        $sql->bindValue(':email', $u->getEmail());
+        $sql->execute();
+
+        $u->setId($this->pdo->lastInsertId());
+        return $u;
     }
 
     public function findAll() {
@@ -32,19 +37,38 @@ class UsuarioDao
         return $array;
     }
 
-    public function findByEmail($email)
-    {
+    public function findByEmail($email) {
+        $sql = $this->pdo->prepare('SELECT * FROM usuarios WHERE email = :email');
+        $sql->bindValue(':email', $email);
+        $sql->execute();
+
+        if($sql->rowCount() > 0) {
+            $data = $sql->fetch();
+            $u = new Usuario();
+            $u->setId($data['id']);
+            return $u;
+        } else {
+            return false;
+        }
     }
 
-    public function findById($id)
-    {
+    public function findById($id) {
+        $sql = $this->pdo->prepare('SELECT * FROM usuarios WHERE id = :id');
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        $data = $sql->fetch();
+        $u = new Usuario();
+        $u->setName($data['nome']);
+        $u->setEmail($data['email']);
+        return $u;
     }
 
-    public function update($u)
-    {
+    public function update($u) {
+
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
+
     }
 }

@@ -18,7 +18,7 @@ if ($name && $email) {
         header('Location: index.php');
         exit;
     } else {
-        header('Location: index.php');
+        header('Location: adicionar.php');
         exit;
     }
 } else {
