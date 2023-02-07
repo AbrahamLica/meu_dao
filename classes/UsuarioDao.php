@@ -59,16 +59,24 @@ class UsuarioDao
 
         $data = $sql->fetch();
         $u = new Usuario();
+        $u->setId($data['id']);
         $u->setName($data['nome']);
         $u->setEmail($data['email']);
         return $u;
     }
 
     public function update($u) {
-
+        $sql = $this->pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id");
+        $sql->bindValue(':id', $u->getId());
+        $sql->bindValue(':nome', $u->getName());
+        $sql->bindValue(':email', $u->getEmail());
+        $sql->execute();
+        return true;
     }
 
     public function delete($id) {
-
+        $sql = $this->pdo->prepare('DELETE FROM usuarios WHERE id = :id');
+        $sql->bindValue(':id', $id);
+        $sql->execute();
     }
 }
